@@ -1,43 +1,34 @@
 name: Build WinUI3Crash
+
 on:
   push:
     branches:
       - master
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      
+
       - name: Restore dependencies
         run: dotnet restore WinUI3Crash.csproj -r win-x64
-      
+
       - name: Build
         run: dotnet build WinUI3Crash.csproj -c Release -r win-x64
-      
+
       - name: Publish
         run: dotnet publish WinUI3Crash.csproj -c Release -r win-x64 -p:Platform=x64 --no-self-contained
-      
-      - name: List publish output
-        run: |
-          Write-Host "=== Checking bin folder contents ==="
-          if (Test-Path "bin") {
-            Get-ChildItem -Path "bin" -Recurse | Select-Object FullName
-          } else {
-            Write-Host "bin folder not found!"
-          }
-        shell: pwsh
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: WinUI3Crash-Build
-          path: bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/publish/
-          if-no-files-found: error
-          retention-days: 30
+          path: bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/
