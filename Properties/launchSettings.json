@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WinUI3Crash (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinUI3Crash (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
