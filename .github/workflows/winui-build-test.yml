@@ -1,4 +1,4 @@
-name: WinUI Build Test
+name: Build WinUI3Crash
 
 on:
   workflow_dispatch:
@@ -6,17 +6,20 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    permissions:
-      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-      - name: Restore
-        run: nuget restore WinUI3Crash.sln
+      - name: Restore dependencies
+        run: dotnet restore WinUI3Crash/WinUI3Crash.csproj -r win10-x64
 
       - name: Build
-        run: msbuild WinUI3Crash.sln /p:Configuration=Release
+        run: dotnet build WinUI3Crash/WinUI3Crash.csproj -c Release
+
+      - name: Publish
+        run: dotnet publish WinUI3Crash/WinUI3Crash.csproj -c Release -r win10-x64 --self-contained /p:PublishReadyToRun=false
