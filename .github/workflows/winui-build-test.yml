@@ -1,0 +1,20 @@
+name: WinUI Build Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: nuget restore WinUI3Crash.sln
+
+      - name: Build
+        run: msbuild WinUI3Crash.sln /p:Configuration=Release
