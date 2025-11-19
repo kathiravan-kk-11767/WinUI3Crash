@@ -1,42 +1,22 @@
 name: WinUI Build Test
+
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to test'
-        required: false
-        default: 'copilot/remove-cswinrt-package'
+
 jobs:
   build:
     runs-on: windows-latest
     permissions:
       contents: read
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-      
-      - name: Setup NuGet
-        uses: nuget/setup-nuget@v1
-      
+
       - name: Restore
         run: nuget restore WinUI3Crash.sln
-      
-      - name: Build Release
-        run: msbuild WinUI3Crash.sln /p:Configuration=Release /p:Platform=x64 /verbosity:detailed
-      
-      - name: Check build artifacts
-        run: |
-          Get-ChildItem -Path "." -Filter "*.exe" -Recurse
-          Get-ChildItem -Path "." -Filter "*.appx" -Recurse
-        shell: pwsh
-      
-      - name: Upload build logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: msbuild-logs
-          path: |
-            **/*.log
-            **/bin/Release/**
+
+      - name: Build
+        run: msbuild WinUI3Crash.sln /p:Configuration=Release
