@@ -13,6 +13,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+      - name: Check Windows SDK versions
+        run: Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Platforms\UAP\"
+        shell: pwsh
       - name: Restore dependencies
         run: dotnet restore WinUI3Crash.csproj -r win-x64
       - name: Build
