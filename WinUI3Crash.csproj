@@ -61,7 +61,6 @@
 
 <PropertyGroup>
 		<SelfContained>true</SelfContained>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
 </PropertyGroup>
 </Project>
